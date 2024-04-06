@@ -1,5 +1,6 @@
 package com.example.mapleapi.service;
 
+import com.example.mapleapi.domain.ApiData;
 import com.example.mapleapi.domain.CharacterBasicDto;
 import com.example.mapleapi.domain.CharacterItemEquipment;
 import com.example.mapleapi.domain.OcidDto;
@@ -31,8 +32,7 @@ public class ApiService {
 
 //    public void getApiByHttpURLConnection() {
 //        try {
-//            String API_KEY = "test_404db065b4630a2d73694fba66a23c1c7018d602f8ae00995ff8298d4d958085160eb8da905a5022f47271f77c0d8686";
-//            String characterName = URLEncoder.encode("르샤마지끄", StandardCharsets.UTF_8);
+//            String characterName = URLEncoder.encode("", StandardCharsets.UTF_8);
 //
 //            String urlString = "https://open.api.nexon.com/maplestory/v1/id?character_name=" + characterName;
 //            URL url = new URL(urlString);
@@ -40,7 +40,7 @@ public class ApiService {
 //            // HTTP connection 설정
 //            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 //            connection.setRequestMethod("GET");
-//            connection.setRequestProperty("x-nxopen-api-key", API_KEY);
+//            connection.setRequestProperty("x-nxopen-api-key", ApiData.API_KEY);
 //
 //            int responseCode = connection.getResponseCode();
 //
@@ -67,14 +67,13 @@ public class ApiService {
 //    }
 
 //    public void getApiByWebClient(String characterName) {
-//        String API_KEY = "test_404db065b4630a2d73694fba66a23c1c7018d602f8ae00995ff8298d4d958085160eb8da905a5022f47271f77c0d8686";
 //
 //        String urlString = "https://open.api.nexon.com";
 //        String uri = "/maplestory/v1/id";
 //
 //        WebClient webClient = WebClient.builder()
 //                .baseUrl("https://open.api.nexon.com")
-//                .defaultHeader("x-nxopen-api-key", API_KEY)
+//                .defaultHeader("x-nxopen-api-key", ApiData.API_KEY)
 //                .build();
 //
 //
@@ -93,15 +92,13 @@ public class ApiService {
 //        log.info("result={}", result.getOcid());
 //    }
 
-//    public void getApiByRestTemplate(String characterName) {
-//        String API_KEY = "test_404db065b4630a2d73694fba66a23c1c7018d602f8ae00995ff8298d4d958085160eb8da905a5022f47271f77c0d8686";
-//
+//    public void getApiByRestTemplate(String characterName) {//
 //        String urlString = "https://open.api.nexon.com";
 //        String uriPath = "/maplestory/v1/id";
 //
 //        //헤더 생성
 //        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.add("x-nxopen-api-key", API_KEY);
+//        httpHeaders.add("x-nxopen-api-key", ApiData.API_KEY);
 //        HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 //
 //        //uri 생성
@@ -141,14 +138,13 @@ public class ApiService {
     }
 
     public String getOcid(String charcaterName) {
-        String API_KEY = "test_404db065b4630a2d73694fba66a23c1c7018d602f8ae00995ff8298d4d958085160eb8da905a5022f47271f77c0d8686";
 
         String urlString = "https://open.api.nexon.com";
         String uriPath = "/maplestory/v1/id";
 
         //헤더 생성
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("x-nxopen-api-key", API_KEY);
+        httpHeaders.add("x-nxopen-api-key", ApiData.API_KEY);
         HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 
         //uri 생성
@@ -172,7 +168,6 @@ public class ApiService {
     }
 
     public CharacterBasicDto getCharacterBasic(String ocid, LocalDateTime dateTime) {
-        String API_KEY = "test_404db065b4630a2d73694fba66a23c1c7018d602f8ae00995ff8298d4d958085160eb8da905a5022f47271f77c0d8686";
 
         String urlString = "https://open.api.nexon.com";
         String uriPath = "/maplestory/v1/character/basic";
@@ -180,7 +175,7 @@ public class ApiService {
 
         //헤더 생성
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("x-nxopen-api-key", API_KEY);
+        httpHeaders.add("x-nxopen-api-key", ApiData.API_KEY);
         HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 
         //uri 생성
@@ -203,7 +198,6 @@ public class ApiService {
     }
 
     public CharacterItemEquipment getCharacterItemEquipment(String ocid, LocalDateTime dateTime) {
-        String API_KEY = "test_404db065b4630a2d73694fba66a23c1c7018d602f8ae00995ff8298d4d958085160eb8da905a5022f47271f77c0d8686";
 
         String urlString = "https://open.api.nexon.com";
         String uriPath = "/maplestory/v1/character/item-equipment";
@@ -211,7 +205,7 @@ public class ApiService {
 
         //헤더 생성
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("x-nxopen-api-key", API_KEY);
+        httpHeaders.add("x-nxopen-api-key", ApiData.API_KEY);
         HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 
         //uri 생성
