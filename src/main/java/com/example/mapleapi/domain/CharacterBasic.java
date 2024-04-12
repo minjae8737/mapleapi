@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -26,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Getter
 @Setter
-public class CharacterBasicDto {
+public class CharacterBasic {
 
     private LocalDateTime date;
     private String character_name;
@@ -41,11 +40,7 @@ public class CharacterBasicDto {
     private String character_image;
 
     public void setDate(Timestamp dateTime) {
-//        log.info("dateTime={}",dateTime);
-//        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mmXXX");
-//        date = LocalDateTime.parse(dateTime, pattern);
         date = dateTime.toLocalDateTime();
-        log.info("date={}", date);
     }
 
     public String getDate() {

@@ -1,9 +1,7 @@
 package com.example.mapleapi.service;
 
-import com.example.mapleapi.domain.ApiData;
-import com.example.mapleapi.domain.CharacterBasicDto;
-import com.example.mapleapi.domain.CharacterItemEquipment;
-import com.example.mapleapi.domain.OcidDto;
+import com.example.mapleapi.domain.*;
+import com.example.mapleapi.domain.Stat.Stat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,96 +28,7 @@ public class ApiService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-//    public void getApiByHttpURLConnection() {
-//        try {
-//            String characterName = URLEncoder.encode("", StandardCharsets.UTF_8);
-//
-//            String urlString = "https://open.api.nexon.com/maplestory/v1/id?character_name=" + characterName;
-//            URL url = new URL(urlString);
-//
-//            // HTTP connection 설정
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//            connection.setRequestMethod("GET");
-//            connection.setRequestProperty("x-nxopen-api-key", ApiData.API_KEY);
-//
-//            int responseCode = connection.getResponseCode();
-//
-//            BufferedReader in;
-//            if (responseCode == 200) {
-//                // responseCode 200 정상응답
-//                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//            } else {
-//                // responseCode 200 이외의 코드가 반환되었을 경우
-//                in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-//            }
-//
-//            String inputLine;
-//            StringBuffer response = new StringBuffer();
-//            while ((inputLine = in.readLine()) != null) {
-//                response.append(inputLine);
-//            }
-//            in.close();
-//
-//            log.info(response.toString());
-//        } catch (Exception e) {
-//            log.info(e.getMessage());
-//        }
-//    }
-
-//    public void getApiByWebClient(String characterName) {
-//
-//        String urlString = "https://open.api.nexon.com";
-//        String uri = "/maplestory/v1/id";
-//
-//        WebClient webClient = WebClient.builder()
-//                .baseUrl("https://open.api.nexon.com")
-//                .defaultHeader("x-nxopen-api-key", ApiData.API_KEY)
-//                .build();
-//
-//
-//        OcidDto result = webClient.get()
-//                .uri(uriBuilder -> uriBuilder.path("/maplestory/v1/id")
-//                        .queryParam("character_name", characterName)
-//                        .build())
-//                .retrieve()
-//                .bodyToMono(OcidDto.class)
-//                .onErrorResume(WebClientResponseException.BadRequest.class, ex -> {
-//                    log.info("400BadRequest");
-//                    return Mono.empty();
-//                })
-//                .block();
-//
-//        log.info("result={}", result.getOcid());
-//    }
-
-//    public void getApiByRestTemplate(String characterName) {//
-//        String urlString = "https://open.api.nexon.com";
-//        String uriPath = "/maplestory/v1/id";
-//
-//        //헤더 생성
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.add("x-nxopen-api-key", ApiData.API_KEY);
-//        HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
-//
-//        //uri 생성
-//        URI uri = UriComponentsBuilder
-//                .fromUriString("https://open.api.nexon.com")
-//                .path("/maplestory/v1/id")
-//                .queryParam("character_name", characterName)
-//                .encode()
-//                .build()
-//                .toUri();
-//
-//        try {
-//            RestTemplate restTemplate = new RestTemplate();
-//            ResponseEntity<OcidDto> response = restTemplate.exchange(uri, HttpMethod.GET, entity, OcidDto.class);
-//            log.info("ocid={}", response.getBody().getOcid());
-//        } catch (HttpStatusCodeException e) {
-//            log.info("HttpStatusCodeException statusCode={}", e.getStatusCode().value());
-//        }
-//    }
-
-    public void getCharacterData(String characterName) {
+    public CharacterDataDto getCharacterData(String characterName) {
 
         LocalDateTime nowTime = LocalDateTime.now();
         LocalDateTime yesterdayTime = nowTime.minusDays(1);
@@ -127,10 +36,19 @@ public class ApiService {
         String ocid = getOcid(characterName);
 
         try {
-//            CharacterBasicDto characterBasic = getCharacterBasic(ocid, yesterdayTime);
+            CharacterBasic characterBasic = getCharacterBasic(ocid, yesterdayTime);
 //            log.info("characterBasic={}", objectMapper.writeValueAsString(characterBasic));
             CharacterItemEquipment characterItemEquipment = getCharacterItemEquipment(ocid, yesterdayTime);
             log.info("characterItemEquipment={}", objectMapper.writeValueAsString(characterItemEquipment));
+            Stat characterStat = getCharacterStat(ocid, yesterdayTime);
+//            log.info("characterStat={}", objectMapper.writeValueAsString(characterStat));
+
+            CharacterDataDto characterDataDto = new CharacterDataDto();
+            characterDataDto.setCharacterBasic(characterBasic);
+            characterDataDto.setCharacterItemEquipment(characterItemEquipment);
+            characterDataDto.setCharacterStat(characterStat);
+
+            return characterDataDto;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -139,18 +57,17 @@ public class ApiService {
 
     public String getOcid(String charcaterName) {
 
-        String urlString = "https://open.api.nexon.com";
         String uriPath = "/maplestory/v1/id";
 
         //헤더 생성
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("x-nxopen-api-key", ApiData.API_KEY);
+        httpHeaders.add(ApiData.API_KEY_HEADER, ApiData.API_KEY);
         HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 
         //uri 생성
         URI uri = UriComponentsBuilder
-                .fromUriString("https://open.api.nexon.com")
-                .path("/maplestory/v1/id")
+                .fromUriString(ApiData.BASE_URL)
+                .path(uriPath)
                 .queryParam("character_name", charcaterName)
                 .encode()
                 .build()
@@ -167,21 +84,20 @@ public class ApiService {
 
     }
 
-    public CharacterBasicDto getCharacterBasic(String ocid, LocalDateTime dateTime) {
+    public CharacterBasic getCharacterBasic(String ocid, LocalDateTime dateTime) {
 
-        String urlString = "https://open.api.nexon.com";
         String uriPath = "/maplestory/v1/character/basic";
         String stringTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         //헤더 생성
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("x-nxopen-api-key", ApiData.API_KEY);
+        httpHeaders.add(ApiData.API_KEY_HEADER, ApiData.API_KEY);
         HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 
         //uri 생성
         URI uri = UriComponentsBuilder
-                .fromUriString("https://open.api.nexon.com")
-                .path("/maplestory/v1/character/basic")
+                .fromUriString(ApiData.BASE_URL)
+                .path(uriPath)
                 .queryParam("ocid", ocid)
                 .queryParam("date", stringTime)
                 .encode()
@@ -189,7 +105,35 @@ public class ApiService {
                 .toUri();
 
         try {
-            ResponseEntity<CharacterBasicDto> response = restTemplate.exchange(uri, HttpMethod.GET, entity, CharacterBasicDto.class);
+            ResponseEntity<CharacterBasic> response = restTemplate.exchange(uri, HttpMethod.GET, entity, CharacterBasic.class);
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            log.info("HttpStatusCodeException statusCode={}", e.getStatusCode().value());
+            return null;
+        }
+    }
+
+    public Stat getCharacterStat(String ocid, LocalDateTime dateTime) {
+        String uriPath = "/maplestory/v1/character/stat";
+        String stringTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        //헤더 생성
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(ApiData.API_KEY_HEADER, ApiData.API_KEY);
+        HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+
+        //uri 생성
+        URI uri = UriComponentsBuilder
+                .fromUriString(ApiData.BASE_URL)
+                .path(uriPath)
+                .queryParam("ocid", ocid)
+                .queryParam("date", stringTime)
+                .encode()
+                .build()
+                .toUri();
+
+        try {
+            ResponseEntity<Stat> response = restTemplate.exchange(uri, HttpMethod.GET, entity, Stat.class);
             return response.getBody();
         } catch (HttpStatusCodeException e) {
             log.info("HttpStatusCodeException statusCode={}", e.getStatusCode().value());
@@ -199,19 +143,18 @@ public class ApiService {
 
     public CharacterItemEquipment getCharacterItemEquipment(String ocid, LocalDateTime dateTime) {
 
-        String urlString = "https://open.api.nexon.com";
         String uriPath = "/maplestory/v1/character/item-equipment";
         String stringTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         //헤더 생성
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("x-nxopen-api-key", ApiData.API_KEY);
+        httpHeaders.add(ApiData.API_KEY_HEADER, ApiData.API_KEY);
         HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
 
         //uri 생성
         URI uri = UriComponentsBuilder
-                .fromUriString("https://open.api.nexon.com")
-                .path("/maplestory/v1/character/item-equipment")
+                .fromUriString(ApiData.BASE_URL)
+                .path(uriPath)
                 .queryParam("ocid", ocid)
                 .queryParam("date", stringTime)
                 .encode()
