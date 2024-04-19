@@ -16,6 +16,11 @@
         }
 
         /*캐릭터 정보*/
+        .char-con {
+            border-radius: 8px;
+            border: 1px solid #f8f9fa;
+        }
+
         .nickname {
             padding-top: 20px;
             font-size: 24px;
@@ -198,7 +203,77 @@
             line-height: 11px;
         }
 
+        /*경험치 표*/
+        .chart-border {
+            border-radius: 8px;
+            border: 1px solid rgb(233, 234, 237);
+            background: rgb(255, 255, 255);
+            overflow: hidden;
+        }
 
+        .chart-up {
+            display: flex;
+            padding: 0px 15px;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgb(233, 234, 237);
+            background: rgb(255, 255, 255);
+            height: 50px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .chart-down {
+            background: rgb(255, 255, 255);
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            height: 200px;
+        }
+
+        /**/
+        .bar-chart {
+            width: 100%;
+            height: 100%;
+            padding: 22px 34px 40px;
+        }
+
+        .bar-xAxis {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: flex-end;
+            border-bottom: 1px solid #6a7084;
+        }
+
+        .bar {
+            width: 50px;
+            height: auto;
+            background-color: #89cb89;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            position: relative;
+        }
+
+        .bar::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+        }
+
+        .bar-percent {
+            position: absolute;
+            bottom: -33px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+        }
+
+        /**/
     </style>
 </head>
 <body>
@@ -207,7 +282,7 @@
 
     <div class="row">
         <!--캐릭터 기본정보-->
-        <section class="container">
+        <section class="container char-con">
             <div class="row">
                 <div class="col-auto" style="gap: 20px">
                     <img class="col-auto" width="156" height="156" th:src="${characterBasic.getCharacter_image()}">
@@ -219,7 +294,7 @@
                         <span class="col charBa divider"></span>
                         <span class="col charBa" th:text="${characterBasic.getCharacter_class()}">직업명</span>
                         <span class="col charBa divider"></span>
-                        <span class="col charBa" th:text="${'인기도 ' + 1}">인기도 0</span>
+                        <span class="col charBa" th:text="${'인기도 ' + characterPopularity.getPopularity()}">인기도 0</span>
                     </div>
                 </div>
             </div>
@@ -516,6 +591,33 @@
                 </div>
             </ul>
         </section>
+
+        <!--경험치 표-->
+        <section class="">
+            <div class="chart-border">
+                <div class="chart-up">
+                    <div>
+                        <h3 style="font-size: 14px">경험치 히스토리</h3>
+                    </div>
+                </div>
+                <div class="chart-down">
+                    <div class="bar-chart">
+                        <div class="bar-xAxis" id="bar-xAxis">
+                            <div th:each="exp : ${characterExpList}">
+                                <div class="bar"
+                                     th:style="'height: ' + ${exp.characterExp * 1.38} + 'px'"
+                                     th:data-label="${exp.characterExp + '%'}">
+                                    <div class="bar-percent" th:text="${#temporals.format(exp.date,'MM월 dd일')}">04월
+                                        04일
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
 
     </div>

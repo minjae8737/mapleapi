@@ -1,8 +1,6 @@
 package com.example.mapleapi.controller;
 
-import com.example.mapleapi.domain.CharacterBasic;
-import com.example.mapleapi.domain.CharacterDataDto;
-import com.example.mapleapi.domain.CharacterItemEquipment;
+import com.example.mapleapi.domain.*;
 import com.example.mapleapi.domain.Stat.Stat;
 import com.example.mapleapi.service.ApiService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -24,6 +24,7 @@ public class ApiController {
     @GetMapping("/")
     public String showHomepage(Model model) {
         log.info("show homepage");
+
         model.addAttribute("characterName", "");
         return "home";
     }
@@ -37,11 +38,16 @@ public class ApiController {
         CharacterBasic characterBasic = characterData.getCharacterBasic();
         CharacterItemEquipment characterItemEquipment = characterData.getCharacterItemEquipment();
         Stat characterStat = characterData.getCharacterStat();
+        CharacterPopularity characterPopularity = characterData.getCharacterPopularity();
+        List<Exp> characterExpList = characterData.getCharacterExpList();
 
         model.addAttribute("characterBasic", characterBasic);
         model.addAttribute("characterItemEquipment", characterItemEquipment);
         model.addAttribute("characterStat", characterStat);
+        model.addAttribute("characterPopularity", characterPopularity);
+        model.addAttribute("characterExpList", characterExpList);
 
         return "userdata";
     }
+
 }
