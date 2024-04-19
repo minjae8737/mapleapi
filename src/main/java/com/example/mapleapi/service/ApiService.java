@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -108,7 +109,8 @@ public class ApiService {
         if (apiRepository.findExpByCharacterNameAtDate(findUserCharacter, exp.getDate()).isEmpty()) {
             apiRepository.expSave(exp);
         } else {
-            apiRepository.updateExp(exp);
+            Exp findExp = apiRepository.findExpByCharacterNameAtDate(findUserCharacter, date).get();
+            apiRepository.updateExp(findExp);
         }
     }
 

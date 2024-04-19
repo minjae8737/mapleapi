@@ -11,11 +11,11 @@ public class Exp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     private double characterExp;
     private LocalDate date;
-    private Long characterId;
+    private long characterId;
 
     public Exp() {
     }

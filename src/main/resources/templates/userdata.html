@@ -15,13 +15,39 @@
             background-color: #333;
         }
 
+        .box-row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .box-char-stat {
+            gap: 10px;
+        }
+
+        .box-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         /*캐릭터 정보*/
-        .char-con {
+        .char-box {
             border-radius: 8px;
             border: 1px solid #f8f9fa;
+            width: 800px;
+
+        }
+
+        .char-box-gap {
+            gap: 10px;
+        }
+
+        .char-img {
+            padding: 15px;
         }
 
         .nickname {
+            align-self: flex-start;
             padding-top: 20px;
             font-size: 24px;
             font-weight: 600;
@@ -29,7 +55,7 @@
             color: rgb(255, 255, 255);
         }
 
-        .charNa {
+        .char-info {
             padding-top: 10px;
             color: rgb(255, 255, 255);
             display: flex;
@@ -38,7 +64,7 @@
             gap: 6px;
         }
 
-        .charNa > .charBa {
+        .char-info > .char-label {
             font-size: 12px;
             line-height: 12px;
         }
@@ -46,17 +72,47 @@
         .divider {
             width: 1px;
             height: 8px;
+            flex: auto;
             background: rgb(155, 158, 168);
         }
 
         /*캐릭터 스텟*/
-        .stat-card {
-            padding-left: 0px;
-            padding-right: 0px;
+
+        .stat-box {
+            position: relative;
+            border-radius: 8px;
+            background: rgb(255, 255, 255);
+            overflow: hidden;
+            border: 1px solid rgb(233, 234, 237);
+            height: fit-content;
+            width: 600px;
         }
 
-        .stat {
-            /*flex: 110%;*/
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 15px;
+            min-height: 50px;
+            background: rgb(255, 255, 255);
+            height: 50px;
+            border-bottom: 1px solid rgb(233, 234, 237);
+        }
+
+        .stat-header > h3 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stat-pristat {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgb(233, 234, 237);
+        }
+
+        .stat-cell {
+            flex: 1 1 0%;
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -64,20 +120,53 @@
             padding-right: 4px;
         }
 
-        .stat-label {
+        .stat-cell > .value {
+            font-size: 12px;
+            line-height: 12px;
+        }
+
+        .stat-cell > .label {
             font-size: 11px;
-            /*line-height: 11px;*/
+            line-height: 11px;
             color: rgb(132, 137, 153);
         }
 
-        .stat-value {
-            font-size: 12px;
-            /*line-height: 12px;*/
-        }
-
-        .card-stat {
+        .stat-spe {
+            display: flex;
+            flex-direction: column;
             background: rgb(250, 250, 250);
         }
+
+        .stat-spe > .cell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 12px;
+            height: 28px;
+            border-bottom: none;
+        }
+
+        .stat-spe > .cell-divider {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0px 12px;
+            height: 28px;
+            border-bottom: 1px solid rgb(233, 234, 237);
+        }
+
+        .cell-label {
+            font-size: 11px;
+            line-height: 11px;
+            color: rgb(132, 137, 153);
+        }
+
+        .cell-value {
+            font-size: 12px;
+            line-height: 12px;
+            color: rgb(102, 106, 122);
+        }
+
 
         /*캐릭터 장비*/
         .eqip {
@@ -278,318 +367,294 @@
 </head>
 <body>
 
-<div class="container">
+<div>
 
-    <div class="row">
+    <div class="box-col" style="gap: 10px">
+
         <!--캐릭터 기본정보-->
-        <section class="container char-con">
-            <div class="row">
-                <div class="col-auto" style="gap: 20px">
-                    <img class="col-auto" width="156" height="156" th:src="${characterBasic.getCharacter_image()}">
+        <section class="char-box">
+            <div class="box-row char-box-gap">
+                <div class="box-col char-img">
+                    <img width="156" height="156" th:src="${characterBasic.getCharacter_image()}">
                 </div>
-                <div class="col chardiv">
+                <div class="box-col">
                     <div class="nickname" th:text="${characterBasic.getCharacter_name()}">캐릭터 이름</div>
-                    <div class="row-cols-auto charNa">
-                        <span class="col charBa" th:text="${'Lv.' + characterBasic.getCharacter_level()}">Lv.000</span>
-                        <span class="col charBa divider"></span>
-                        <span class="col charBa" th:text="${characterBasic.getCharacter_class()}">직업명</span>
-                        <span class="col charBa divider"></span>
-                        <span class="col charBa" th:text="${'인기도 ' + characterPopularity.getPopularity()}">인기도 0</span>
+                    <div class="char-info">
+                        <span class="char-label" th:text="${'Lv.' + characterBasic.getCharacter_level()}">Lv.000</span>
+                        <span class="char-label divider"></span>
+                        <span class="char-label" th:text="${characterBasic.getCharacter_class()}">직업명</span>
+                        <span class="char-label divider"></span>
+                        <span class="char-label" th:text="${'인기도 ' + characterPopularity.getPopularity()}">인기도 0</span>
                     </div>
                 </div>
             </div>
         </section>
 
 
-        <!--캐릭터 스탯창-->
-        <section class="col stat-card">
-            <div class="card">
-                <div class="card-header">
-                    <h3 style="font-size: 14px">스탯</h3>
+        <section class="box-row box-char-stat">
+
+            <!--캐릭터 스탯창-->
+            <section class="stat-box">
+                <div class="stat-header">
+                    <h3>스탯</h3>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="container row">
-                            <div class="stat-value"
-                                 th:text="${characterStat.getStatByStatName('최소 스탯공격력')+' ~ ' + characterStat.getStatByStatName('최대 스탯공격력')}"></div>
-                            <div class="stat-label">스탯 공격력</div>
+                <div class="stat-pristat">
+                    <div class="stat-cell">
+                        <div class="value"
+                             th:text="${characterStat.getStatByStatName('최소 스탯공격력')+' ~ ' + characterStat.getStatByStatName('최대 스탯공격력')}">
+                            13,911,233 ~ 14,643,402
                         </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="container row">
-                            <div class="col stat">
-                                <div class="stat-value" th:text="${characterStat.getStatByStatName('HP')}"></div>
-                                <div class="col stat-label">HP</div>
-                            </div>
-                            <div class="col stat">
-                                <div class="stat-value" th:text="${characterStat.getStatByStatName('MP')}"></div>
-                                <div class="col stat-label">MP</div>
-                            </div>
-                            <div class="col stat">
-                                <div class="stat-value" th:text="${characterStat.getStatByStatName('STR')}"></div>
-                                <div class="col stat-label">STR</div>
-                            </div>
+                        <div class="label">스탯 공격력</div>
+                    </div>
+                </div>
+                <div class="stat-pristat">
+                    <div class="stat-cell">
+                        <div class="value" th:text="${characterStat.getStatByStatName('HP')}">49,885</div>
+                        <div class="label">HP</div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="value" th:text="${characterStat.getStatByStatName('MP')}">85,897</div>
+                        <div class="label">MP</div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="value" th:text="${characterStat.getStatByStatName('STR')}">1,657</div>
+                        <div class="label">STR</div>
+                    </div>
+                </div>
+                <div class="stat-pristat">
+                    <div class="stat-cell">
+                        <div class="value" th:text="${characterStat.getStatByStatName('DEX')}">1,657</div>
+                        <div class="label">DEX</div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="value" th:text="${characterStat.getStatByStatName('INT')}">1,657</div>
+                        <div class="label">INT</div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="value" th:text="${characterStat.getStatByStatName('LUK')}">1,657</div>
+                        <div class="label">LUK</div>
+                    </div>
+                </div>
+                <div class="stat-spe">
+                    <div class="cell">
+                        <div class="cell-label">데미지</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('데미지') + '%'}">100.00%</div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">최종 데미지</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('최종 데미지') + '%'}">100.00%
                         </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="container row">
-                            <div class="col stat">
-                                <div class="stat-value" th:text="${characterStat.getStatByStatName('DEX')}"></div>
-                                <div class="col stat-label">DEX</div>
-                            </div>
-                            <div class="col stat">
-                                <div class="stat-value" th:text="${characterStat.getStatByStatName('INT')}"></div>
-                                <div class="col stat-label">INT</div>
-                            </div>
-                            <div class="col stat">
-                                <div class="stat-value" th:text="${characterStat.getStatByStatName('LUK')}"></div>
-                                <div class="col stat-label">LUK</div>
-                            </div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">보스 몬스터 데미지</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('보스 몬스터 데미지') + '%'}">
+                            100.00%
                         </div>
-                    </li>
-                    <li class="list-group-item card-stat">
-                        <div class="container row">
-                            <div class="col stat-label">데미지</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('데미지') + '%'}"></div>
+                    </div>
+                    <div class="cell-divider">
+                        <div class="cell-label">일반 몬스터 데미지</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('일반 몬스터 데미지') + '%'}">
+                            100.00%
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">최종 데미지</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('최종 데미지') + '%'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">공격력</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('공격력')}">100</div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">마력</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('마력')}">100</div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">방어율 무시</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('방어율 무시') + '%'}">100.00%
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">보스 몬스터 데미지</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('보스 몬스터 데미지') + '%'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">크리티컬 확률</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('크리티컬 확률') + '%'}">100.00%
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">일반 몬스터 데미지</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('일반 몬스터 데미지') + '%'}"></div>
+                    </div>
+                    <div class="cell-divider">
+                        <div class="cell-label">크리티컬 데미지</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('크리티컬 데미지') + '%'}">100.00%
                         </div>
-                    </li>
-                    <li class="list-group-item card-stat">
-                        <div class="container row">
-                            <div class="col stat-label">공격력</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('공격력')}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">스타포스</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('스타포스')}">100.00</div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">아케인포스</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('아케인포스')}">100.00</div>
+                    </div>
+                    <div class="cell-divider">
+                        <div class="cell-label">어센틱포스</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('어센틱포스')}">100.00</div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">재사용 대기시간 감소 (초)</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('재사용 대기시간 감소 (초)') + '초'}">
+                            100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">마력</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('마력')}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">재사용 대기시간 감소 (%)</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('재사용 대기시간 감소 (%)') + '%'}">
+                            100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">방어율 무시</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('방어율 무시') + '%'}"></div>
+                    </div>
+                    <div class="cell-divider">
+                        <div class="cell-label">재사용 대기시간 미적용</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('재사용 대기시간 미적용') + '%'}">
+                            100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">크리티컬 확률</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('크리티컬 확률') + '%'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">속성 내성 무시</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('속성 내성 무시') + '%'}">100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">크리티컬 데미지</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('크리티컬 데미지') + '%'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">상태이상 추가 데미지</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('상태이상 추가 데미지') + '%'}">
+                            100.00
                         </div>
-                    </li>
-                    <li class="list-group-item card-stat">
-                        <div class="container row">
-                            <div class="col stat-label">스타포스</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('스타포스')}"></div>
+                    </div>
+                    <div class="cell-divider">
+                        <div class="cell-label">상태이상 내성</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('상태이상 내성')}">100.00</div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">추가 경험치 획득</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('추가 경험치 획득') + '%'}">100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">아케인포스</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('아케인포스')}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">소환수 지속시간 증가</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('소환수 지속시간 증가') + '%'}">
+                            100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">어센틱포스</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('어센틱포스')}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">무기 숙련도</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('무기 숙련도') + '%'}">100.00
                         </div>
-                    </li>
-                    <li class="list-group-item card-stat">
-                        <div class="container row">
-                            <div class="col stat-label">재사용 대기시간 감소 (초)</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('재사용 대기시간 감소 (초)') + '초'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">스탠스</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('스탠스') + '%'}">100.00</div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">방어력</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('방어력')}">100.00</div>
+                    </div>
+                    <div class="cell-divider">
+                        <div class="cell-label">버프 지속시간</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('버프 지속시간') + '%'}">100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">재사용 대기시간 감소 (%)</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('재사용 대기시간 감소 (%)') + '%'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">이동속도</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('이동속도') + '%'}">100.00</div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">점프력</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('점프력') + '%'}">100.00</div>
+                    </div>
+                    <div class="cell-divider">
+                        <div class="cell-label">공격 속도</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('공격 속도') + '단계'}">100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">재사용 대기시간 미적용</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('재사용 대기시간 미적용') + '%'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">아이템 드롭률</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('아이템 드롭률') + '%'}">100.00
                         </div>
-                    </li>
-                    <li class="list-group-item card-stat">
-                        <div class="container row">
-                            <div class="col stat-label">속성 내성 무시</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('속성 내성 무시') + '%'}"></div>
+                    </div>
+                    <div class="cell-divider">
+                        <div class="cell-label">메소 획득량</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('메소 획득량') + '%'}">100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">상태이상 추가 데미지</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('상태이상 추가 데미지') + '%'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">AP 배분 STR</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('AP 배분 STR')}">100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">상태이상 내성</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('상태이상 내성')}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">AP 배분 DEX</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('AP 배분 DEX')}">100.00
                         </div>
-                    </li>
-                    <li class="list-group-item card-stat">
-                        <div class="container row">
-                            <div class="col stat-label">추가 경험치 획득</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('추가 경험치 획득') + '%'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">AP 배분 INT</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('AP 배분 INT')}">100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">소환수 지속시간 증가</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('소환수 지속시간 증가') + '%'}"></div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">AP 배분 LUK</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('AP 배분 LUK')}">100.00</div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell-label">AP 배분 HP</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('AP 배분 HP')}">100.00</div>
+                    </div>
+                    <div class="cell-divider">
+                        <div class="cell-label">AP 배분 MP</div>
+                        <div class="cell-value" th:text="${characterStat.getStatByStatName('AP 배분 MP')}">100.00
                         </div>
-                        <div class="container row">
-                            <div class="col stat-label">무기 숙련도</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('무기 숙련도') + '%'}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">스탠스</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('스탠스') + '%'}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">방어력</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('방어력')}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">버프 지속시간</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('버프 지속시간') + '%'}"></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item card-stat">
-                        <div class="container row">
-                            <div class="col stat-label">이동속도</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('이동속도')  + '%'}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">점프력</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('점프력') + '%'}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">공격 속도</div>
-                            <div class="col text-end stat-value"
-                                 th:text="${characterStat.getStatByStatName('공격 속도') + '단계'}"></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item card-stat">
-                        <div class="container row">
-                            <div class="col stat-label">아이템 드롭률</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('아이템 드롭률')  + '%'}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">메소 획득량</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('메소 획득량') + '%'}"></div>
-                        </div>
-                    </li>
-                    <li class="list-group-item card-stat">
-                        <div class="container row">
-                            <div class="col stat-label">AP 배분 STR</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('AP 배분 STR')}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">AP 배분 STR</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('AP 배분 DEX')}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">AP 배분 STR</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('AP 배분 INT')}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">AP 배분 STR</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('AP 배분 LUK')}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">AP 배분 STR</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('AP 배분 HP')}"></div>
-                        </div>
-                        <div class="container row">
-                            <div class="col stat-label">AP 배분 STR</div>
-                            <div class="col text-end stat-value "
-                                 th:text="${characterStat.getStatByStatName('AP 배분 MP')}"></div>
-                        </div>
-                    </li>
+                    </div>
 
 
+                </div>
+            </section>
+
+            <!--캐릭터 장비-->
+            <section class="eqip">
+                <div class="eqip-header">
+                    <h3 style="font-size: 14px">장비</h3>
+                </div>
+                <ul class="eqip-body">
+                    <div class="eqip-body-card" th:each="equipment : ${characterItemEquipment.getItem_equipment()}">
+                        <div class="eqip-body-card-up">
+                            <div class="item-image-wrapper">
+                                <img th:src="${equipment.getItem_shape_icon()}">
+                            </div>
+                            <div class="item-basic">
+                                <div class="label" th:text="${equipment.getItem_equipment_part()}"></div>
+                                <div class="name" th:text="${equipment.getItem_name()}"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="eqip-body-card-poten" th:if="${equipment.getPotential_option_1() != null}">
+                                <div class="eqip-body-card-title">잠재</div>
+                                <div class="eqip-body-card-content">
+                                    <div class="eqip-body-card-content-value"
+                                         th:text="${equipment.getPotential_option_1()}"></div>
+                                    <div class="eqip-body-card-content-value"
+                                         th:text="${equipment.getPotential_option_2()}"></div>
+                                    <div class="eqip-body-card-content-value"
+                                         th:text="${equipment.getPotential_option_3()}"></div>
+                                </div>
+                            </div>
+                            <div class="eqip-body-card-addi"
+                                 th:if="${equipment.getAdditional_potential_option_1() != null}">
+                                <div class="eqip-body-card-title">에디</div>
+                                <div class="eqip-body-card-content">
+                                    <div class="eqip-body-card-content-value"
+                                         th:text="${equipment.getAdditional_potential_option_1()}"></div>
+                                    <div class="eqip-body-card-content-value"
+                                         th:text="${equipment.getAdditional_potential_option_2()}"></div>
+                                    <div class="eqip-body-card-content-value"
+                                         th:text="${equipment.getAdditional_potential_option_3()}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </ul>
-            </div>
-        </section>
+            </section>
 
-
-        <!--캐릭터 장비-->
-        <section class="col eqip">
-            <div class="eqip-header">
-                <h3 style="font-size: 14px">장비</h3>
-            </div>
-            <ul class="eqip-body">
-                <div class="eqip-body-card" th:each="equipment : ${characterItemEquipment.getItem_equipment()}">
-                    <div class="eqip-body-card-up">
-                        <div class="item-image-wrapper">
-                            <img th:src="${equipment.getItem_shape_icon()}">
-                        </div>
-                        <div class="item-basic">
-                            <div class="label" th:text="${equipment.getItem_equipment_part()}"></div>
-                            <div class="name" th:text="${equipment.getItem_name()}"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="eqip-body-card-poten" th:if="${equipment.getPotential_option_1() != null}">
-                            <div class="eqip-body-card-title">잠재</div>
-                            <div class="eqip-body-card-content">
-                                <div class="eqip-body-card-content-value"
-                                     th:text="${equipment.getPotential_option_1()}"></div>
-                                <div class="eqip-body-card-content-value"
-                                     th:text="${equipment.getPotential_option_2()}"></div>
-                                <div class="eqip-body-card-content-value"
-                                     th:text="${equipment.getPotential_option_3()}"></div>
-                            </div>
-                        </div>
-                        <div class="eqip-body-card-addi"
-                             th:if="${equipment.getAdditional_potential_option_1() != null}">
-                            <div class="eqip-body-card-title">에디</div>
-                            <div class="eqip-body-card-content">
-                                <div class="eqip-body-card-content-value"
-                                     th:text="${equipment.getAdditional_potential_option_1()}"></div>
-                                <div class="eqip-body-card-content-value"
-                                     th:text="${equipment.getAdditional_potential_option_2()}"></div>
-                                <div class="eqip-body-card-content-value"
-                                     th:text="${equipment.getAdditional_potential_option_3()}"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ul>
         </section>
 
         <!--경험치 표-->
@@ -617,7 +682,6 @@
                 </div>
             </div>
         </section>
-
 
 
     </div>
