@@ -30,12 +30,25 @@
             align-items: center;
         }
 
+        /*캐릭터 정보없음*/
+        .box-nulldata {
+            display: flex;
+            border-radius: 8px;
+            border: 1px solid #f8f9fa;
+            width: 800px;
+            justify-content: center;
+        }
+
+        .box-nulldata > h3 {
+            font-size: 20px;
+            color: #ffffff;
+        }
+
         /*캐릭터 정보*/
         .char-box {
             border-radius: 8px;
             border: 1px solid #f8f9fa;
             width: 800px;
-
         }
 
         .char-box-gap {
@@ -375,22 +388,23 @@
         <section class="char-box">
             <div class="box-row char-box-gap">
                 <div class="box-col char-img">
-                    <img width="156" height="156" th:src="${characterBasic.getCharacter_image()}">
+                    <img width="156" height="156" th:src="${characterBasic.character_image}">
                 </div>
                 <div class="box-col">
-                    <div class="nickname" th:text="${characterBasic.getCharacter_name()}">캐릭터 이름</div>
+                    <div class="nickname" th:text="${characterBasic.character_name}">캐릭터 이름</div>
                     <div class="char-info">
-                        <span class="char-label" th:text="${'Lv.' + characterBasic.getCharacter_level()}">Lv.000</span>
+                        <span class="char-label" th:text="${'Lv.' + characterBasic.character_level}">Lv.000</span>
                         <span class="char-label divider"></span>
-                        <span class="char-label" th:text="${characterBasic.getCharacter_class()}">직업명</span>
+                        <span class="char-label" th:text="${characterBasic.character_class}">직업명</span>
                         <span class="char-label divider"></span>
-                        <span class="char-label" th:text="${'인기도 ' + characterPopularity.getPopularity()}">인기도 0</span>
+                        <span class="char-label" th:text="${'인기도 ' + characterPopularity.popularity}">인기도 0</span>
                     </div>
                 </div>
             </div>
         </section>
 
 
+        <!--캐릭터 스탯창 && 캐릭터 장비-->
         <section class="box-row box-char-stat">
 
             <!--캐릭터 스탯창-->
@@ -616,38 +630,38 @@
                     <h3 style="font-size: 14px">장비</h3>
                 </div>
                 <ul class="eqip-body">
-                    <div class="eqip-body-card" th:each="equipment : ${characterItemEquipment.getItem_equipment()}">
+                    <div class="eqip-body-card" th:each="equipment : ${characterItemEquipment.item_equipment}">
                         <div class="eqip-body-card-up">
                             <div class="item-image-wrapper">
-                                <img th:src="${equipment.getItem_shape_icon()}">
+                                <img th:src="${equipment.item_shape_icon}">
                             </div>
                             <div class="item-basic">
-                                <div class="label" th:text="${equipment.getItem_equipment_part()}"></div>
-                                <div class="name" th:text="${equipment.getItem_name()}"></div>
+                                <div class="label" th:text="${equipment.item_equipment_part}"></div>
+                                <div class="name" th:text="${equipment.item_name}"></div>
                             </div>
                         </div>
                         <div>
-                            <div class="eqip-body-card-poten" th:if="${equipment.getPotential_option_1() != null}">
+                            <div class="eqip-body-card-poten" th:if="${equipment.potential_option_1 != null}">
                                 <div class="eqip-body-card-title">잠재</div>
                                 <div class="eqip-body-card-content">
                                     <div class="eqip-body-card-content-value"
-                                         th:text="${equipment.getPotential_option_1()}"></div>
+                                         th:text="${equipment.potential_option_1}"></div>
                                     <div class="eqip-body-card-content-value"
-                                         th:text="${equipment.getPotential_option_2()}"></div>
+                                         th:text="${equipment.potential_option_2}"></div>
                                     <div class="eqip-body-card-content-value"
-                                         th:text="${equipment.getPotential_option_3()}"></div>
+                                         th:text="${equipment.potential_option_3}"></div>
                                 </div>
                             </div>
                             <div class="eqip-body-card-addi"
-                                 th:if="${equipment.getAdditional_potential_option_1() != null}">
+                                 th:if="${equipment.additional_potential_option_1 != null}">
                                 <div class="eqip-body-card-title">에디</div>
                                 <div class="eqip-body-card-content">
                                     <div class="eqip-body-card-content-value"
-                                         th:text="${equipment.getAdditional_potential_option_1()}"></div>
+                                         th:text="${equipment.additional_potential_option_1}"></div>
                                     <div class="eqip-body-card-content-value"
-                                         th:text="${equipment.getAdditional_potential_option_2()}"></div>
+                                         th:text="${equipment.additional_potential_option_2}"></div>
                                     <div class="eqip-body-card-content-value"
-                                         th:text="${equipment.getAdditional_potential_option_3()}"></div>
+                                         th:text="${equipment.additional_potential_option_3}"></div>
                                 </div>
                             </div>
                         </div>
@@ -658,7 +672,7 @@
         </section>
 
         <!--경험치 표-->
-        <section class="">
+        <section>
             <div class="chart-border">
                 <div class="chart-up">
                     <div>
@@ -672,9 +686,7 @@
                                 <div class="bar"
                                      th:style="'height: ' + ${exp.characterExp * 1.38} + 'px'"
                                      th:data-label="${exp.characterExp + '%'}">
-                                    <div class="bar-percent" th:text="${#temporals.format(exp.date,'MM월 dd일')}">04월
-                                        04일
-                                    </div>
+                                    <div class="bar-percent" th:text="${#temporals.format(exp.date,'MM월 dd일')}">04월 04일</div>
                                 </div>
                             </div>
                         </div>
@@ -683,8 +695,8 @@
             </div>
         </section>
 
-
     </div>
+
 </div>
 
 </body>

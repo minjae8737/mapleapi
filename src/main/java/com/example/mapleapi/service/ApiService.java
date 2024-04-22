@@ -63,14 +63,13 @@ public class ApiService {
             CharacterBasic characterBasic = getCharacterBasic(ocid, yesterdayTime);
             log.info("characterBasic={}", objectMapper.writeValueAsString(characterBasic));
             CharacterItemEquipment characterItemEquipment = getCharacterItemEquipment(ocid, yesterdayTime);
-//            log.info("characterItemEquipment={}", objectMapper.writeValueAsString(characterItemEquipment));
+            log.info("characterItemEquipment={}", objectMapper.writeValueAsString(characterItemEquipment));
             Stat characterStat = getCharacterStat(ocid, yesterdayTime);
-//            log.info("characterStat={}", objectMapper.writeValueAsString(characterStat));
+            log.info("characterStat={}", objectMapper.writeValueAsString(characterStat));
             CharacterPopularity characterPopularity = getCharacterPopularity(ocid, yesterdayTime);
 
             // 캐릭터 날짜별 경험치 기록 리스트 가져오기
             List<Exp> characterExpList = getCharacterExpList(ocid, characterBasic);
-            log.info("characterExpList ={}", characterExpList == null);
 
             CharacterDataDto characterDataDto = new CharacterDataDto();
             characterDataDto.setCharacterBasic(characterBasic);
@@ -86,6 +85,9 @@ public class ApiService {
     }
 
     public List<Exp> getCharacterExpList(String ocid, CharacterBasic characterBasic) {
+
+        if(ocid == null) return null;
+
         UserCharacter userCharacter = saveUserCharacter(ocid, characterBasic);
 
         //저장된 유저 찾아오기
@@ -115,6 +117,9 @@ public class ApiService {
     }
 
     private UserCharacter saveUserCharacter(String ocid, CharacterBasic characterBasic) {
+
+        if(ocid == null) return null;
+
         UserCharacter userCharacter = new UserCharacter();
         userCharacter.setOcid(ocid);
         userCharacter.setCharacterName(characterBasic.getCharacter_name());
@@ -158,6 +163,8 @@ public class ApiService {
 
     public CharacterBasic getCharacterBasic(String ocid, LocalDateTime dateTime) {
 
+        if(ocid == null) return null;
+
         String uriPath = "/maplestory/v1/character/basic";
         String stringTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
@@ -186,6 +193,9 @@ public class ApiService {
     }
 
     public Stat getCharacterStat(String ocid, LocalDateTime dateTime) {
+
+        if(ocid == null) return null;
+
         String uriPath = "/maplestory/v1/character/stat";
         String stringTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
@@ -215,6 +225,8 @@ public class ApiService {
 
     public CharacterItemEquipment getCharacterItemEquipment(String ocid, LocalDateTime dateTime) {
 
+        if(ocid == null) return null;
+
         String uriPath = "/maplestory/v1/character/item-equipment";
         String stringTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
@@ -243,6 +255,8 @@ public class ApiService {
     }
 
     public CharacterPopularity getCharacterPopularity(String ocid, LocalDateTime dateTime) {
+
+        if(ocid == null) return null;
 
         String uriPath = "/maplestory/v1/character/popularity";
         String stringTime = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+
+        body {
+            background-color: #333;
+        }
+
+        .box-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /*캐릭터 정보없음*/
+        .box-nulldata {
+            display: flex;
+            border-radius: 8px;
+            border: 1px solid #f8f9fa;
+            width: 800px;
+            justify-content: center;
+        }
+
+        .box-nulldata > h3 {
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+    </style>
+</head>
+<body>
+
+<div>
+
+    <div class="box-col" style="gap: 10px">
+
+        <div class="box-nulldata">
+            <h3>캐릭터 정보는 2023.12.21 이후 접속한 계정의 캐릭터만 확인이 가능합니다.</h3>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

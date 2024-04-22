@@ -41,6 +41,9 @@ public class ApiController {
         CharacterPopularity characterPopularity = characterData.getCharacterPopularity();
         List<Exp> characterExpList = characterData.getCharacterExpList();
 
+        //캐릭터 정보가 없을시
+        if(characterBasic == null) return "no-userdata";
+
         model.addAttribute("characterBasic", characterBasic);
         model.addAttribute("characterItemEquipment", characterItemEquipment);
         model.addAttribute("characterStat", characterStat);
