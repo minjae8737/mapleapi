@@ -2,6 +2,7 @@ package com.example.mapleapi.domain.ItemEquipment;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * "item_equipment": [
@@ -132,6 +133,7 @@ import lombok.Setter;
  * ]
  */
 
+@Slf4j
 @Getter
 @Setter
 public class ItemEquipment {
@@ -218,6 +220,12 @@ public class ItemEquipment {
         if (optionName.contains("캐릭터 기준 9레벨 당 ")) replacedOptionName = optionName.replace("캐릭터 기준 9레벨 당 ", "9렙당");
         if (optionName.contains("보스 몬스터 공격 시 데미지")) replacedOptionName = optionName.replace("보스 몬스터 공격 시 데미지", "보공");
         if (optionName.contains("몬스터 방어율 무시")) replacedOptionName = optionName.replace("몬스터 방어율 무시", "방무");
+        if (optionName.contains("크리티컬 데미지")) replacedOptionName = optionName.replace("크리티컬 데미지", "크뎀");
+        if (optionName.contains("모든 스킬의 재사용 대기시간")){
+            replacedOptionName = optionName.replace("모든 스킬의 재사용 대기시간", "쿨감");
+            if (optionName.contains("(10초 이하는 10%감소, 5초 미만으로 감소 불가)")) replacedOptionName = replacedOptionName.replace("(10초 이하는 10%감소, 5초 미만으로 감소 불가)", "");
+            if (optionName.contains("(10초 이하는 5%감소, 5초 미만으로 감소 불가)")) replacedOptionName = replacedOptionName.replace("(10초 이하는 5%감소, 5초 미만으로 감소 불가)", "");
+        }
 
         return replacedOptionName.replaceAll("\\s", "");
     }

@@ -1,6 +1,7 @@
 package com.example.mapleapi.service;
 
 import com.example.mapleapi.domain.*;
+import com.example.mapleapi.domain.Character.*;
 import com.example.mapleapi.domain.Stat.Stat;
 import com.example.mapleapi.repository.ApiRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,7 +23,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 
 @Slf4j
@@ -63,9 +63,9 @@ public class ApiService {
             CharacterBasic characterBasic = getCharacterBasic(ocid, yesterdayTime);
             log.info("characterBasic={}", objectMapper.writeValueAsString(characterBasic));
             CharacterItemEquipment characterItemEquipment = getCharacterItemEquipment(ocid, yesterdayTime);
-            log.info("characterItemEquipment={}", objectMapper.writeValueAsString(characterItemEquipment));
+//            log.info("characterItemEquipment={}", objectMapper.writeValueAsString(characterItemEquipment));
             Stat characterStat = getCharacterStat(ocid, yesterdayTime);
-            log.info("characterStat={}", objectMapper.writeValueAsString(characterStat));
+//            log.info("characterStat={}", objectMapper.writeValueAsString(characterStat));
             CharacterPopularity characterPopularity = getCharacterPopularity(ocid, yesterdayTime);
 
             // 캐릭터 날짜별 경험치 기록 리스트 가져오기

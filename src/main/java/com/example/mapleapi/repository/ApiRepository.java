@@ -1,14 +1,13 @@
 package com.example.mapleapi.repository;
 
-import com.example.mapleapi.domain.UserCharacter;
-import com.example.mapleapi.domain.Exp;
+import com.example.mapleapi.domain.Character.UserCharacter;
+import com.example.mapleapi.domain.Character.Exp;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

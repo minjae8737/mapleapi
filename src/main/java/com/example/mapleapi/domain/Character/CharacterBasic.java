@@ -1,4 +1,4 @@
-package com.example.mapleapi.domain;
+package com.example.mapleapi.domain.Character;
 
 import lombok.Getter;
 import lombok.Setter;

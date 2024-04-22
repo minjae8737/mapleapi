@@ -1,6 +1,6 @@
 package com.example.mapleapi.controller;
 
-import com.example.mapleapi.domain.*;
+import com.example.mapleapi.domain.Character.*;
 import com.example.mapleapi.domain.Stat.Stat;
 import com.example.mapleapi.service.ApiService;
 import lombok.RequiredArgsConstructor;
